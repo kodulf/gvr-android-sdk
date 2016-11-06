@@ -27,9 +27,15 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.Pair;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.vr.sdk.widgets.common.TouchTracker;
+import com.google.vr.sdk.widgets.common.VrEventListener;
+import com.google.vr.sdk.widgets.common.VrWidgetView;
 import com.google.vr.sdk.widgets.pano.VrPanoramaEventListener;
 import com.google.vr.sdk.widgets.pano.VrPanoramaView;
 import com.google.vr.sdk.widgets.pano.VrPanoramaView.Options;
@@ -51,7 +57,7 @@ import java.io.InputStream;
 public class SimpleVrPanoramaActivity extends Activity {
   private static final String TAG = SimpleVrPanoramaActivity.class.getSimpleName();
   /** Actual panorama widget. **/
-  private VrPanoramaView panoWidgetView;
+  private MyVrPanoramaView panoWidgetView;
   /**
    * Arbitrary variable to track load status. In this example, this variable should only be accessed
    * on the UI thread. In a real app, this variable would be code that performs some UI actions when
@@ -79,16 +85,17 @@ public class SimpleVrPanoramaActivity extends Activity {
     sourceText.setText(Html.fromHtml(getString(R.string.source)));
     sourceText.setMovementMethod(LinkMovementMethod.getInstance());
 
-    panoWidgetView = (VrPanoramaView) findViewById(R.id.pano_view);
+    panoWidgetView = (MyVrPanoramaView) findViewById(R.id.pano_view);
     panoWidgetView.setEventListener(new ActivityEventListener());
-    panoWidgetView.setOnClickListener(new View.OnClickListener() {
+
+    //主要需要设置的是touch而不是click
+
+    panoWidgetView.setOnChangeCallBack(new MyVrPanoramaView.ChangeCallBack() {
       @Override
-      public void onClick(View v) {
-        Toast.makeText(getApplicationContext(),"clicked" +
-                "",Toast.LENGTH_LONG).show();
+      public void change() {
+        changeImage();
       }
     });
-
     // Initial launch of the app or an Activity recreation due to rotation.
     handleIntent(getIntent());
   }
@@ -165,7 +172,11 @@ public class SimpleVrPanoramaActivity extends Activity {
     super.onDestroy();
   }
 
-  public void changeImage(View view) {
+
+  public void changeImage(View view){
+
+  }
+  public void changeImage() {
     if(!doubleTime) {
       backgroundImageLoaderTask = null;
 

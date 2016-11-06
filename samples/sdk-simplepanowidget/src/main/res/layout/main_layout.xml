@@ -33,7 +33,7 @@
           android:textSize="@dimen/paragragh_text_size"
           android:text="@string/paragraph1" />
 ®
-        <com.google.vr.sdk.widgets.pano.VrPanoramaView
+        <com.google.vr.sdk.samples.simplepanowidget.MyVrPanoramaView
             android:id="@+id/pano_view"
             android:layout_margin="5dip"
             android:layout_width="match_parent"
