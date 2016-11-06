@@ -177,6 +177,10 @@ public class SimpleVrPanoramaActivity extends Activity {
 
   }
   public void changeImage() {
+    //注意了，这里的options 一定要设置，不然会有问题
+    panoOptions = new Options();
+    panoOptions.inputType = Options.TYPE_STEREO_OVER_UNDER;
+
     if(!doubleTime) {
       backgroundImageLoaderTask = null;
 
